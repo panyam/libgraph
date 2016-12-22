@@ -12,11 +12,20 @@ class Traversal(object):
         # Marks a node's state - can be missing (undiscovered), discovered (0) and processed (1)
         self.node_state = {}
 
+        # The parent nodes for each of the nodes
+        self.parents = {}
+
     def get_node_state(self, node):
         return self.node_state.get(node, None)
 
     def set_node_state(self, node, state):
-        self.node_state.get[node] = state
+        self.node_state[node] = state
+
+    def get_parent(self, node):
+        return self.parents.get(node, None)
+
+    def set_parent(self, node, parent):
+        self.parents[node] = parent
 
     def process_node(self, parent, node):
         """
@@ -61,8 +70,8 @@ def bfs(start_node, traversal):
     """
     Performs a breadth first traversal of a graph.
     """
+    start_node = traversal.graph.nodes[start_node]
     queue = deque([(None, start_node)])
-    parents = {start_node: None}
 
     PROCESSED = 1
     while queue:
@@ -73,14 +82,13 @@ def bfs(start_node, traversal):
             for n,edge in traversal.select_children(node):
                 if traversal.get_node_state(node) != PROCESSED:
                     queue.append((node,n))
-                    parents[n] = node
+                    traversal.set_parent(n, node)
             traversal.children_added(node)
-    return parents
 
 def dfs(start_node, traversal):
+    start_node = traversal.graph.nodes[start_node]
     stack = deque([(None, start_node)])
     PROCESSED = 1
-    parents = {start_node: None}
     while stack:
         parent, node = stack.pop()
         if traversal.process_node(parent, node) is True:
@@ -89,7 +97,6 @@ def dfs(start_node, traversal):
             for n,edge in traversal.select_children(node):
                 if traversal.get_node_state(node) != PROCESSED:
                     stack.append((node,n))
-                    parents[n] = node
+                    traversal.set_parent(n, node)
             traversal.children_added(node)
-    return parents
 
