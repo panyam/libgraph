@@ -15,6 +15,9 @@ class Traversal(object):
         # The parent nodes for each of the nodes
         self.parents = {}
 
+        # Set this flag to true if you want the traversal to stop
+        self.terminated = False
+
     def get_node_state(self, node):
         return self.node_state.get(node, None)
 
@@ -76,8 +79,8 @@ def bfs(start_node, traversal):
     PROCESSED = 1
     while queue:
         parent, node = queue.popleft()
-        if traversal.process_node(parent, node) is False:
-            continue
+        if traversal.process_node(parent, node) is False: continue
+        if traversal.terminated: return
 
         # Give a chance to terminate before marking as visited and reaching the children 
         traversal.set_node_state(node, PROCESSED)
@@ -93,8 +96,8 @@ def dfs(start_node, traversal):
     PROCESSED = 1
     while stack:
         parent, node = stack.pop()
-        if traversal.process_node(parent, node) is False:
-            continue
+        if traversal.process_node(parent, node) is False: continue
+        if traversal.terminated: return
 
         # Give a chance to terminate before marking as visited and reaching the children 
         traversal.set_node_state(node, PROCESSED)

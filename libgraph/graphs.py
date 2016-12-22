@@ -122,7 +122,9 @@ class Graph(object):
             self.add_edge(source, target)
 
     def get_edge(self, source, target):
-        return self.nodes[source].neighbours[target]
+        if source not in self.nodes:
+            return None
+        return self.nodes[source].neighbours.get(target, None)
 
     def add_edge(self, source, target, **properties):
         """

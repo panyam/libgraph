@@ -23,3 +23,15 @@ class Tests(unittest.TestCase):
         self.assertEqual(tr.get_parent(4), 1)
         self.assertEqual(tr.get_parent(5), 2)
         self.assertEqual(tr.get_parent(6), 5)
+
+"""
+    def test_cycle(self):
+        g = graphs.Graph()
+        g.add_edges((1,2), (2,3), (3,1))
+
+        tr = traversals.Traversal(g)
+        traversals.dfs(1, tr)
+        self.assertEqual(tr.get_node_state(1), 1)
+        self.assertEqual(tr.get_node_state(2), 1)
+        self.assertEqual(tr.get_node_state(3), 1)
+"""
