@@ -148,12 +148,12 @@ class Graph(object):
         else:
             return self.nodes[nodekey].neighbours.itervalues()
 
-    def iter_edges(self, nodekey):
+    def iter_edges(self):
         """
         Returns an iterator over all edges in the graph.  The ordering of edges is unspecified.
         """
         for source in self.nodes.iterkeys():
-            for target, edge in self.nodes[node].neighbours.iteritems():
+            for target, edge in self.nodes[source].neighbours.iteritems():
                 # Only yield the edge if it originates form here, 
                 # this would take care of the case of both directed
                 # and undirected edges

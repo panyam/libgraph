@@ -20,13 +20,12 @@ def connected_components(graph):
         def process_node(self, parent, node):
             self.components[node] = self.curr_component
 
-    ipdb.set_trace()
     traversal = CCTraversal(graph)
     for node in graph.nodes:
         if node not in traversal.components:
-            traversal.curr_component += 1
             # Node has already been assigned a component so dont bother with this
             bfs(node, traversal)
+            traversal.curr_component += 1
 
     return traversal.components
 
