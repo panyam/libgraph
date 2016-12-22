@@ -19,11 +19,14 @@ class Node(object):
         """
         return self._neighbours
 
-    def iter_neighbours(self):
+    def iter_neighbours(self, reverse = False):
         """
         A list of neighbour nodes.
         """
-        return self._neighbours.iteritems()
+        if reverse:
+            return reversed(self._neighbours.items())
+        else:
+            return self._neighbours.iteritems()
 
     def ensure_neighbour(self, node, default_data):
         if node not in self._neighbours:

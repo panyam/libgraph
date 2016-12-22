@@ -49,7 +49,7 @@ class Traversal(object):
         """
         return True
 
-    def select_children(self, node):
+    def select_children(self, node, reverse = False):
         """
         Called to select the children of the node that are up for traversal from the given node
         along with the order the children are to be traversed.
@@ -57,7 +57,7 @@ class Traversal(object):
         By default returns all the children in no particular order.
         Returns an iterator of tuples - (node, edge_data)
         """
-        return node.iter_neighbours()
+        return node.iter_neighbours(reverse = reverse)
 
     def children_added(self, node):
         """
@@ -98,7 +98,7 @@ def dfs(start_node, traversal):
 
         # Give a chance to terminate before marking as visited and reaching the children 
         traversal.set_node_state(node, PROCESSED)
-        for n,edge in traversal.select_children(node):
+        for n,edge in traversal.select_children(node, reverse = True):
             if traversal.get_node_state(n) != PROCESSED:
                 stack.append((node,n))
                 traversal.set_parent(n, node)
