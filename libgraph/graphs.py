@@ -118,6 +118,9 @@ class Graph(object):
         for source, target in source_target_pairs:
             self.add_edge(source, target)
 
+    def get_edge(self, source, target):
+        return self.nodes[source].neighbours[target]
+
     def add_edge(self, source, target, **properties):
         """
         Add a new Edge object into the graph.  If the edge's source and target nodes do not exist
