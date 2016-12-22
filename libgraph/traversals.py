@@ -80,7 +80,7 @@ def bfs(start_node, traversal):
             # Give a chance to terminate before marking as visited and reaching the children 
             traversal.set_node_state(node, PROCESSED)
             for n,edge in traversal.select_children(node):
-                if traversal.get_node_state(node) != PROCESSED:
+                if traversal.get_node_state(n) != PROCESSED:
                     queue.append((node,n))
                     traversal.set_parent(n, node)
             traversal.children_added(node)
@@ -95,7 +95,7 @@ def dfs(start_node, traversal):
             # Give a chance to terminate before marking as visited and reaching the children 
             traversal.set_node_state(node, PROCESSED)
             for n,edge in traversal.select_children(node):
-                if traversal.get_node_state(node) != PROCESSED:
+                if traversal.get_node_state(n) != PROCESSED:
                     stack.append((node,n))
                     traversal.set_parent(n, node)
             traversal.children_added(node)

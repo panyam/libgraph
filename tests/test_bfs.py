@@ -1,4 +1,5 @@
 
+import ipdb
 import unittest
 from libgraph import graphs, traversals, algorithms
 
@@ -9,3 +10,16 @@ class Tests(unittest.TestCase):
 
         tr = traversals.Traversal(g)
         traversals.bfs(1, tr)
+        self.assertEqual(tr.get_node_state(1), 1)
+        self.assertEqual(tr.get_node_state(2), 1)
+        self.assertEqual(tr.get_node_state(3), 1)
+        self.assertEqual(tr.get_node_state(4), 1)
+        self.assertEqual(tr.get_node_state(5), 1)
+        self.assertEqual(tr.get_node_state(6), 1)
+
+        self.assertEqual(tr.get_parent(1), None)
+        self.assertEqual(tr.get_parent(2), 1)
+        self.assertEqual(tr.get_parent(3), 1)
+        self.assertEqual(tr.get_parent(4), 1)
+        self.assertEqual(tr.get_parent(5), 2)
+        self.assertEqual(tr.get_parent(6), 5)
