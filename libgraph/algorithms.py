@@ -17,7 +17,7 @@ def connected_components(graph):
             self.components = {}
             self.curr_component = 0
 
-        def process_node(self, parent, node):
+        def process_node(self, node):
             self.components[node] = self.curr_component
 
     traversal = CCTraversal(graph)
@@ -29,3 +29,10 @@ def connected_components(graph):
 
     return traversal.components
 
+def topo_sort(graph):
+    """
+    Given a directed graph, return an ordering of nodes ordered by when they can be processed.
+    None if cycles exist or if graph is undirected.
+    """
+    if not graph.is_directed:
+        return None

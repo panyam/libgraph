@@ -18,8 +18,8 @@ class Tests(unittest.TestCase):
         self.assertEqual(tr.get_node_state(6), 1)
 
         self.assertEqual(tr.get_parent(1), None)
-        self.assertEqual(tr.get_parent(2), 1)
-        self.assertEqual(tr.get_parent(3), 2)
+        self.assertEqual(tr.get_parent(2), 3)
+        self.assertEqual(tr.get_parent(3), 1)
         self.assertEqual(tr.get_parent(4), 1)
         self.assertEqual(tr.get_parent(5), 2)
         self.assertEqual(tr.get_parent(6), 5)
