@@ -44,7 +44,7 @@ def topo_sort(graph):
             Traversal.__init__(self, graph)
             self.stack = []
 
-        def should_process_children(self, node):
+        def process_node(self, node):
             self.stack.append(node)
 
         def process_edge(self, source, target, edge):

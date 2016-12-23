@@ -1,6 +1,6 @@
 
 import itertools
-from collections import deque
+from collections import deque, defaultdict
 
 DISCOVERED = 0
 PROCESSED = 1
@@ -12,19 +12,15 @@ class Traversal(object):
     def __init__(self, graph):
         self.graph = graph
 
-        # Marks a node's state - can be missing (undiscovered), discovered (0) and processed (1)
-        self.node_state = {}
-        self.entry_times = {}
-        self.exit_times = {}
-
         # The parent nodes for each of the nodes
-        self.parents = {}
+        self.parents = defaultdict(lambda: None)
+        # Marks a node's state - can be missing (undiscovered), discovered (0) and processed (1)
+        self.node_state = defaultdict(lambda: None)
+
+        self.curr_time, self.entry_times, self.exit_times = 0, {}, {}
 
         # Set this flag to true if you want the traversal to stop
         self.terminated = False
-
-        # Used to record the traversal "index" of a node
-        self.curr_time = 0
 
     def should_process_children(self, node):
         """
@@ -66,20 +62,17 @@ def bfs(start_node, traversal):
     Performs a breadth first traversal of a graph.
     """
     start_node = traversal.graph.nodes[start_node]
+    if not start_node: return
     queue = deque([(None, start_node)])
 
-    while queue:
+    while queue and not traversal.terminated:
         parent, node = queue.popleft()
+        traversal.node_state[node] = DISCOVERED
         if traversal.should_process_children(node) is False: continue
 
-        traversal.entry_times[node] = traversal.exit_times[node] = traversal.curr_time
-        traversal.curr_time += 1
-        if traversal.terminated: return
-
-        # Give a chance to terminate before marking as visited and reaching the children 
         traversal.node_state[node] = PROCESSED
         for n,edge in traversal.select_children(node):
-            if traversal.node_state.get(n, None) != PROCESSED:
+            if traversal.node_state[n] != PROCESSED:
                 queue.append((node,n))
                 traversal.parents[n] = node
 

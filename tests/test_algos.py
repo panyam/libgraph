@@ -27,6 +27,17 @@ class Tests(unittest.TestCase):
         comps = algorithms.connected_components(g)
         self.assertEqual(len(set(comps.values())), 3)
 
+    def test_topo_sort1(self):
+        g = graphs.Graph(directed = True)
+        g.add_edges((1,0), (2, 1))
+        exists,path = algorithms.topo_sort(g)
+        print "Path1: ", path
+        g = graphs.Graph(directed = True)
+        g.add_edges((0,1), (1,2))
+        exists,path = algorithms.topo_sort(g)
+        print "Path2: ", path
+        self.assertTrue(exists)
+
     def test_topo_sort_no_cycles(self):
         g = graphs.Graph(directed = True)
         g.add_edges((1,2), (1,9), (2,9), (2,3), (9, 3), (3, 4), (4,5), (4,8), (5,6), (6,8), (6,7), (8,7))
