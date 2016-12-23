@@ -57,7 +57,7 @@ class Traversal(object):
         By default returns all the children in no particular order.
         Returns an iterator of tuples - (node, edge_data)
         """
-        return node.iter_neighbours(reverse = reverse)
+        return self.graph.iter_edges(node, reverse = reverse)
 
 
 def bfs(start_node, traversal):
@@ -80,24 +80,6 @@ def bfs(start_node, traversal):
 
         # Called after all children are added to be processed
         traversal.process_node(node)
-
-def dfs_iter(start_node, traversal):
-    """
-    Iterative version of the DFS algorithm to avoid stack overflows.
-    """
-    stack = deque([(None, start_node)])
-    while stack:
-        parent, node = stack.pop()
-        if traversal.process_node(node) is False: continue
-        if traversal.terminated: return
-
-        # Give a chance to terminate before marking as visited and reaching the children 
-        traversal.node_state[node] = PROCESSED
-        for n,edge in traversal.select_children(node, reverse = True):
-            if traversal.node_state[n] != PROCESSED:
-                stack.append((node,n))
-                traversal.parents[n] = node
-        traversal.children_added(node)
 
 def dfs(node, traversal):
     """
