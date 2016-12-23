@@ -1,4 +1,3 @@
-import itertools
 
 class Edge(object):
     def __init__(self, source, target, data = None):
