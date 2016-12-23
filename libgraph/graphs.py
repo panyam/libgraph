@@ -50,23 +50,16 @@ class Edge(object):
         self._target = target
         self._directed = directed
 
+    @property
+    def is_directed(self): return self._directed
+    @property
+    def source(self): return self._source
+    @property
+    def target(self): return self._target
+
     def __repr__(self):
-        if self._directed:
-            return "Edge<%s --> %s>" % (repr(self.source), repr(self.target))
-        else:
-            return "Edge<%s <-> %s>" % (repr(self.source), repr(self.target))
-
-    @property
-    def is_directed(self):
-        return self._directed
-
-    @property
-    def source(self):
-        return self._source
-
-    @property
-    def target(self):
-        return self._target
+        if self._directed: return "Edge<%s --> %s>" % (repr(self.source), repr(self.target))
+        else: return "Edge<%s <-> %s>" % (repr(self.source), repr(self.target))
 
 class Graph(object):
     """

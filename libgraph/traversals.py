@@ -22,6 +22,9 @@ class Traversal(object):
         # Set this flag to true if you want the traversal to stop
         self.terminated = False
 
+    @property
+    def is_directed(self): return self.graph.is_directed
+
     def should_process_children(self, node):
         """
         This method is called before a node is processed.  If this method
@@ -54,7 +57,7 @@ class Traversal(object):
         By default returns all the children in no particular order.
         Returns an iterator of tuples - (node, edge_data)
         """
-        return self.graph.iter_neighbours(node, reverse = reverse)
+        return node.iter_neighbours(reverse = reverse)
 
 
 def bfs(start_node, traversal):

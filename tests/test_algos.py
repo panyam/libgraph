@@ -45,7 +45,7 @@ class Tests(unittest.TestCase):
         exists,path = algorithms.topo_sort(g)
         print "Path: ", path
         self.assertTrue(exists)
-        self.assertEquals(path, list(xrange(1,10)))
+        self.assertEquals(path, [7,8,6,5,4,3,9,2,1])
 
     def test_topo_sort_no_cycles_disconnected(self):
         g = graphs.Graph(directed = True)
@@ -55,4 +55,4 @@ class Tests(unittest.TestCase):
         exists,path = algorithms.topo_sort(g)
         print "Path: ", path
         self.assertTrue(exists)
-        self.assertEquals(path, [1,4,3,2,40,10,30,20])
+        self.assertEquals(path, [4,3,2,1,40,30,20,10])
