@@ -56,35 +56,6 @@ class Node(object):
         else:
             return cmp(self._key, another)
 
-class Edge(object):
-    def __init__(self, source, target, directed = False, **properties):
-        self._source = source
-        self._target = target
-        self._directed = directed
-        self._properties = properties
-
-    def __repr__(self):
-        if self._directed:
-            return "Edge<%s --> %s>" % (repr(self.source), repr(self.target))
-        else:
-            return "Edge<%s <-> %s>" % (repr(self.source), repr(self.target))
-
-    @property
-    def is_directed(self):
-        return self._directed
-
-    @property
-    def source(self):
-        return self._source
-
-    @property
-    def target(self):
-        return self._target
-
-    @property
-    def properites(self):
-        return self._properties
-
 class Graph(base.GraphBase):
     """
     Implementation of an undirected graph.
@@ -109,23 +80,22 @@ class Graph(base.GraphBase):
             return None
         return self.nodes[source].neighbours.get(target, None)
 
-    def add_edge(self, source, target, **properties):
+    def add_raw_edge(self, edge):
         """
         Add a new Edge object into the graph.  If the edge's source and target nodes do not exist
         then new nodes are added implicitly.  Returns an Edge object whose properties can be set.  
         Optionally the properties can be passed to this method and they will be set in the returned 
         Edge object.
         """
-        source, target = self.add_nodes(source, target)
-        newedge = Edge(source, target, directed = self.is_directed, **properties)
+        source,target = edge.source, edge.target
         if self.is_multi:
-            self.nodes[source].ensure_neighbour(target, []).append(newedge)
+            self.nodes[source].ensure_neighbour(target, []).append(edge)
             if not self.is_directed:
-                self.nodes[target].ensure_neighbour(source, []).append(newedge)
+                self.nodes[target].ensure_neighbour(source, []).append(edge)
         else:
-            self.nodes[source].add_neighbour(target, newedge)
+            self.nodes[source].add_neighbour(target, edge)
             if not self.is_directed:
-                self.nodes[target].add_neighbour(source, newedge)
+                self.nodes[target].add_neighbour(source, edge)
 
     def iter_neighbours(self, node, reverse = False):
         return node.iter_neighbours(reverse = reverse)

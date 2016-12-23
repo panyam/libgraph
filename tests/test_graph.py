@@ -1,6 +1,6 @@
 
 import unittest
-from libgraph import graphs
+from libgraph import graphs, base
 
 class Tests(unittest.TestCase):
     def test_creation(self):
@@ -19,25 +19,25 @@ class Tests(unittest.TestCase):
         self.assertTrue(5 in g.nodes)
         self.assertTrue(isinstance(g.nodes[5], graphs.Node))
 
-        self.assertTrue(isinstance(g.get_edge(1, 2), graphs.Edge))
-        self.assertTrue(isinstance(g.get_edge(2, 3), graphs.Edge))
-        self.assertTrue(isinstance(g.get_edge(3, 4), graphs.Edge))
-        self.assertTrue(isinstance(g.get_edge(4, 5), graphs.Edge))
+        self.assertTrue(isinstance(g.get_edge(1, 2), base.Edge))
+        self.assertTrue(isinstance(g.get_edge(2, 3), base.Edge))
+        self.assertTrue(isinstance(g.get_edge(3, 4), base.Edge))
+        self.assertTrue(isinstance(g.get_edge(4, 5), base.Edge))
 
-        self.assertTrue(isinstance(g.get_edge(2, 1), graphs.Edge))
-        self.assertTrue(isinstance(g.get_edge(3, 2), graphs.Edge))
-        self.assertTrue(isinstance(g.get_edge(4, 3), graphs.Edge))
-        self.assertTrue(isinstance(g.get_edge(5, 4), graphs.Edge))
+        self.assertTrue(isinstance(g.get_edge(2, 1), base.Edge))
+        self.assertTrue(isinstance(g.get_edge(3, 2), base.Edge))
+        self.assertTrue(isinstance(g.get_edge(4, 3), base.Edge))
+        self.assertTrue(isinstance(g.get_edge(5, 4), base.Edge))
 
-        self.assertTrue(isinstance(g.nodes[1].neighbours[2], graphs.Edge))
-        self.assertTrue(isinstance(g.nodes[2].neighbours[3], graphs.Edge))
-        self.assertTrue(isinstance(g.nodes[3].neighbours[4], graphs.Edge))
-        self.assertTrue(isinstance(g.nodes[4].neighbours[5], graphs.Edge))
+        self.assertTrue(isinstance(g.nodes[1].neighbours[2], base.Edge))
+        self.assertTrue(isinstance(g.nodes[2].neighbours[3], base.Edge))
+        self.assertTrue(isinstance(g.nodes[3].neighbours[4], base.Edge))
+        self.assertTrue(isinstance(g.nodes[4].neighbours[5], base.Edge))
 
-        self.assertTrue(isinstance(g.nodes[2].neighbours[1], graphs.Edge))
-        self.assertTrue(isinstance(g.nodes[3].neighbours[2], graphs.Edge))
-        self.assertTrue(isinstance(g.nodes[4].neighbours[3], graphs.Edge))
-        self.assertTrue(isinstance(g.nodes[5].neighbours[4], graphs.Edge))
+        self.assertTrue(isinstance(g.nodes[2].neighbours[1], base.Edge))
+        self.assertTrue(isinstance(g.nodes[3].neighbours[2], base.Edge))
+        self.assertTrue(isinstance(g.nodes[4].neighbours[3], base.Edge))
+        self.assertTrue(isinstance(g.nodes[5].neighbours[4], base.Edge))
 
         # Ensure a -> b and b -> a is the same edge instance
         self.assertEqual(id(g.nodes[2].neighbours[1]), id(g.nodes[1].neighbours[2]))
@@ -58,10 +58,10 @@ class Tests(unittest.TestCase):
         self.assertTrue(5 in g.nodes)
         self.assertTrue(isinstance(g.nodes[5], graphs.Node))
 
-        self.assertTrue(isinstance(g.get_edge(1, 2), graphs.Edge))
-        self.assertTrue(isinstance(g.get_edge(2, 3), graphs.Edge))
-        self.assertTrue(isinstance(g.get_edge(3, 4), graphs.Edge))
-        self.assertTrue(isinstance(g.get_edge(4, 5), graphs.Edge))
+        self.assertTrue(isinstance(g.get_edge(1, 2), base.Edge))
+        self.assertTrue(isinstance(g.get_edge(2, 3), base.Edge))
+        self.assertTrue(isinstance(g.get_edge(3, 4), base.Edge))
+        self.assertTrue(isinstance(g.get_edge(4, 5), base.Edge))
 
         self.assertEqual(g.get_edge(2, 1), None)
         self.assertEqual(g.get_edge(3, 2), None)
