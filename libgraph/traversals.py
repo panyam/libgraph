@@ -62,9 +62,8 @@ class Traversal(object):
 
 def bfs(start_node, traversal):
     """
-    Performs a breadth first traversal of a graph.
+    Performs a breadth first traversal of a graph
     """
-    start_node = traversal.graph.nodes[start_node]
     if not start_node: return
     queue = deque([(None, start_node)])
 
@@ -86,7 +85,6 @@ def dfs_iter(start_node, traversal):
     """
     Iterative version of the DFS algorithm to avoid stack overflows.
     """
-    start_node = traversal.graph.nodes[start_node]
     stack = deque([(None, start_node)])
     while stack:
         parent, node = stack.pop()
@@ -107,7 +105,6 @@ def dfs(node, traversal):
     """
     if traversal.terminated: return
 
-    node = traversal.graph.nodes[node]
     traversal.node_state[node] = DISCOVERED
     traversal.entry_times[node] = traversal.curr_time
     traversal.curr_time += 1
@@ -119,7 +116,7 @@ def dfs(node, traversal):
                 traversal.parents[n] = node
                 traversal.process_edge(node, n, edge)
                 dfs(n, traversal)
-            elif traversal.node_state[n] == DISCOVERED or traversal.graph.is_directed:
+            elif traversal.node_state[n] == DISCOVERED or traversal.is_directed:
                 traversal.process_edge(node, n, edge)
         if traversal.process_node(node) is not False:
             traversal.node_state[node] = PROCESSED

@@ -11,15 +11,9 @@ class Node(object):
 
     @property
     def neighbours(self):
-        """
-        A list of neighbour nodes.
-        """
         return self._neighbours
 
     def iter_neighbours(self, reverse = False):
-        """
-        A list of neighbour nodes.
-        """
         if reverse: return reversed(self._neighbours.items())
         else: return self._neighbours.iteritems()
 
