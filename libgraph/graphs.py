@@ -1,16 +1,17 @@
-import itertools, ipdb
+import itertools
 
 class Edge(object):
-    def __init__(self, source, target):
-        self._source, self._target = source, target
-
-    @property
-    def source(self): return self._source
-    @property
-    def target(self): return self._target
+    def __init__(self, source, target, data = None):
+        self._source, self._target, self.data = source, target, data
 
     def __repr__(self):
         return "Edge<%s <-> %s>" % (repr(self.source), repr(self.target))
+
+    @property
+    def source(self): return self._source
+
+    @property
+    def target(self): return self._target
 
 class Graph(object):
     def __init__(self, multi = False, directed = False):
