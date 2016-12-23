@@ -1,4 +1,3 @@
-
 import itertools
 
 class Node(object):
