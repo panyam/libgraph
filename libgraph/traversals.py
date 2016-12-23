@@ -26,18 +26,6 @@ class Traversal(object):
         # Used to record the traversal "index" of a node
         self.curr_time = 0
 
-    def get_node_state(self, node):
-        return self.node_state.get(node, None)
-
-    def set_node_state(self, node, state):
-        self.node_state[node] = state
-
-    def get_parent(self, node):
-        return self.parents.get(node, None)
-
-    def set_parent(self, node, parent):
-        self.parents[node] = parent
-
     def should_process_children(self, node):
         """
         This method is called before a node is processed.  If this method
@@ -89,11 +77,11 @@ def bfs(start_node, traversal):
         if traversal.terminated: return
 
         # Give a chance to terminate before marking as visited and reaching the children 
-        traversal.set_node_state(node, PROCESSED)
+        traversal.node_state[node] = PROCESSED
         for n,edge in traversal.select_children(node):
-            if traversal.get_node_state(n) != PROCESSED:
+            if traversal.node_state.get(n, None) != PROCESSED:
                 queue.append((node,n))
-                traversal.set_parent(n, node)
+                traversal.parents[n] = node
 
         # Called after all children are added to be processed
         traversal.process_node(node)
@@ -110,11 +98,11 @@ def dfs_iter(start_node, traversal):
         if traversal.terminated: return
 
         # Give a chance to terminate before marking as visited and reaching the children 
-        traversal.set_node_state(node, PROCESSED)
+        traversal.node_state[node] = PROCESSED
         for n,edge in traversal.select_children(node, reverse = True):
-            if traversal.get_node_state(n) != PROCESSED:
+            if traversal.node_state[n] != PROCESSED:
                 stack.append((node,n))
-                traversal.set_parent(n, node)
+                traversal.parents[n] = node
         traversal.children_added(node)
 
 def dfs(node, traversal):
@@ -124,21 +112,21 @@ def dfs(node, traversal):
     if traversal.terminated: return
 
     node = traversal.graph.nodes[node]
-    traversal.set_node_state(node, DISCOVERED)
+    traversal.node_state[node] = DISCOVERED
     traversal.entry_times[node] = traversal.curr_time
     traversal.curr_time += 1
 
     if traversal.should_process_children(node) is not False:
         # Now go through all children
         for n,edge in traversal.select_children(node, reverse = True):
-            if traversal.get_node_state(n) == None: # Node has not even been discovered yet
-                traversal.set_parent(n, node)
+            if n not in traversal.node_state: # Node has not even been discovered yet
+                traversal.parents[n] = node
                 traversal.process_edge(node, n, edge)
                 dfs(n, traversal)
-            elif traversal.get_node_state(n) == DISCOVERED or traversal.graph.is_directed:
+            elif traversal.node_state[n] == DISCOVERED or traversal.graph.is_directed:
                 traversal.process_edge(node, n, edge)
         if traversal.process_node(node) is not False:
-            traversal.set_node_state(node, PROCESSED)
+            traversal.node_state[node] = PROCESSED
             traversal.curr_time += 1
             traversal.exit_times[node] = traversal.curr_time
 

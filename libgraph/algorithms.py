@@ -51,12 +51,12 @@ def topo_sort(graph):
             """
             When processing an edge ensure we have no back edges.
             """
-            if self.get_node_state(target) == DISCOVERED:
+            if target in self.node_state and self.node_state[target] == DISCOVERED:
                 self.terminated = True
 
     traversal = TSTraversal(graph)
     for node in graph.nodes:
-        if traversal.get_node_state(node) is None:
+        if node not in traversal.node_state:
             dfs(node, traversal)
             if traversal.terminated:
                 return False, None

@@ -10,19 +10,19 @@ class Tests(unittest.TestCase):
 
         tr = traversals.Traversal(g)
         traversals.dfs(1, tr)
-        self.assertEqual(tr.get_node_state(1), 1)
-        self.assertEqual(tr.get_node_state(2), 1)
-        self.assertEqual(tr.get_node_state(3), 1)
-        self.assertEqual(tr.get_node_state(4), 1)
-        self.assertEqual(tr.get_node_state(5), 1)
-        self.assertEqual(tr.get_node_state(6), 1)
+        self.assertEqual(tr.node_state[1], 1)
+        self.assertEqual(tr.node_state[2], 1)
+        self.assertEqual(tr.node_state[3], 1)
+        self.assertEqual(tr.node_state[4], 1)
+        self.assertEqual(tr.node_state[5], 1)
+        self.assertEqual(tr.node_state[6], 1)
 
-        self.assertEqual(tr.get_parent(1), None)
-        self.assertEqual(tr.get_parent(2), 3)
-        self.assertEqual(tr.get_parent(3), 1)
-        self.assertEqual(tr.get_parent(4), 1)
-        self.assertEqual(tr.get_parent(5), 2)
-        self.assertEqual(tr.get_parent(6), 5)
+        self.assertTrue(1 not in tr.parents)
+        self.assertEqual(tr.parents[2], 3)
+        self.assertEqual(tr.parents[3], 1)
+        self.assertEqual(tr.parents[4], 1)
+        self.assertEqual(tr.parents[5], 2)
+        self.assertEqual(tr.parents[6], 5)
 
 """
     def test_cycle(self):
@@ -31,7 +31,7 @@ class Tests(unittest.TestCase):
 
         tr = traversals.Traversal(g)
         traversals.dfs(1, tr)
-        self.assertEqual(tr.get_node_state(1), 1)
-        self.assertEqual(tr.get_node_state(2), 1)
-        self.assertEqual(tr.get_node_state(3), 1)
+        self.assertEqual(tr.node_state[1), 1)
+        self.assertEqual(tr.node_state[2), 1)
+        self.assertEqual(tr.node_state[3), 1)
 """
