@@ -4,11 +4,10 @@ import itertools
 class Node(object):
     def __init__(self, key, **properties):
         self._key = key
-        self._properties = properties
+        self.properties = properties
         self._neighbours = {}
 
-    def __repr__(self):
-        return repr(self._key)
+    def __repr__(self): return repr(self._key)
 
     @property
     def neighbours(self):
@@ -21,10 +20,8 @@ class Node(object):
         """
         A list of neighbour nodes.
         """
-        if reverse:
-            return reversed(self._neighbours.items())
-        else:
-            return self._neighbours.iteritems()
+        if reverse: return reversed(self._neighbours.items())
+        else: return self._neighbours.iteritems()
 
     def ensure_neighbour(self, node, default_data):
         if node not in self._neighbours:
@@ -39,16 +36,8 @@ class Node(object):
             del self._neighbours[node]
 
     @property
-    def key(self):
-        return self._key
-
-    @property
-    def properites(self):
-        return self._properties
-
-    def __hash__(self):
-        return hash(self._key)
-
+    def key(self): return self._key
+    def __hash__(self): return hash(self._key)
     def __cmp__(self, another):
         if hasattr(another, "key"):
             return cmp(self._key, another._key)
