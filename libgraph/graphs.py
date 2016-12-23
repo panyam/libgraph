@@ -1,6 +1,5 @@
 
-import ipdb
-from collections import defaultdict
+import base
 import itertools
 
 class Node(object):
@@ -86,22 +85,13 @@ class Edge(object):
     def properites(self):
         return self._properties
 
-class Graph(object):
+class Graph(base.GraphBase):
     """
     Implementation of an undirected graph.
     """
     def __init__(self, multi = False, directed = False):
+        base.GraphBase.__init__(self, multi, directed)
         self.nodes = {}
-        self._is_directed = directed
-        self._is_multi = multi
-
-    @property
-    def is_multi(self):
-        return self._is_multi
-
-    @property
-    def is_directed(self):
-        return self._is_directed
 
     def add_node(self, node):
         """
@@ -113,13 +103,6 @@ class Graph(object):
                 node = Node(node)
             self.nodes[node] = node
         return self.nodes[node]
-
-    def add_nodes(self, *nodes):
-        return [self.add_node(node) for node in nodes]
-
-    def add_edges(self, *source_target_pairs):
-        for source, target in source_target_pairs:
-            self.add_edge(source, target)
 
     def get_edge(self, source, target):
         if source not in self.nodes:
@@ -143,6 +126,9 @@ class Graph(object):
             self.nodes[source].add_neighbour(target, newedge)
             if not self.is_directed:
                 self.nodes[target].add_neighbour(source, newedge)
+
+    def iter_neighbours(self, node, reverse = False):
+        return node.iter_neighbours(reverse = reverse)
 
     def iter_node_edges(self, nodekey):
         """

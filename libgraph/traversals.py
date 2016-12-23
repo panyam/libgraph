@@ -70,7 +70,7 @@ class Traversal(object):
         By default returns all the children in no particular order.
         Returns an iterator of tuples - (node, edge_data)
         """
-        return node.iter_neighbours(reverse = reverse)
+        return self.graph.iter_neighbours(node, reverse = reverse)
 
 
 def bfs(start_node, traversal):
