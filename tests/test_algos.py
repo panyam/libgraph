@@ -1,7 +1,7 @@
 
 import ipdb
 import unittest
-from libgraph import graphs, traversals, algorithms
+from libgraph import graphs, algorithms
 
 class Tests(unittest.TestCase):
     def test_basic(self):

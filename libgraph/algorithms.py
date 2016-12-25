@@ -1,6 +1,6 @@
 
 import ipdb
-from traversals import *
+import dfs, bfs
 
 def connected_components(graph):
     """
@@ -11,9 +11,9 @@ def connected_components(graph):
             that node as the value.
     """
 
-    class CCTraversal(Traversal):
+    class CCTraversal(bfs.Traversal):
         def __init__(self, graph):
-            Traversal.__init__(self, graph)
+            bfs.Traversal.__init__(self, graph)
             self.components = {}
             self.curr_component = 0
 
@@ -24,7 +24,7 @@ def connected_components(graph):
     for node in graph.nodes:
         if node not in traversal.components:
             # Node has already been assigned a component so dont bother with this
-            bfs(node, traversal)
+            bfs.bfs(node, traversal)
             traversal.curr_component += 1
 
     return traversal.components
@@ -39,9 +39,9 @@ def topo_sort(graph):
     all undiscovered nodes.
     """
 
-    class TSTraversal(Traversal):
+    class TSTraversal(dfs.Traversal):
         def __init__(self, graph):
-            Traversal.__init__(self, graph)
+            dfs.Traversal.__init__(self, graph)
             self.stack = []
 
         def process_node(self, node):
@@ -51,13 +51,13 @@ def topo_sort(graph):
             """
             When processing an edge ensure we have no back edges.
             """
-            if target in self.node_state and self.node_state[target] == DISCOVERED:
+            if target in self.node_state and self.node_state[target] == dfs.DISCOVERED:
                 self.terminated = True
 
     traversal = TSTraversal(graph)
     for node in graph.nodes:
         if node not in traversal.node_state:
-            dfs(node, traversal)
+            dfs.dfs(node, traversal)
             if traversal.terminated:
                 return False, None
 

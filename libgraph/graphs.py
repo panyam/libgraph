@@ -64,7 +64,7 @@ class Graph(object):
         source_key = self.key_func(source)
         target_key = self.key_func(target)
         self.nodes[source_key][target_key] = edge
-        if not self.is_directed:
+        if not self.is_directed and source_key != target_key:
             self.nodes[target_key][source_key] = edge
         return edge
 

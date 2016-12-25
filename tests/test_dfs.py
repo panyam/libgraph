@@ -1,15 +1,15 @@
 
 import ipdb
 import unittest
-from libgraph import graphs, traversals, algorithms
+from libgraph import graphs, dfs, algorithms
 
 class Tests(unittest.TestCase):
     def test_basic(self):
         g = graphs.Graph()
         g.add_edges((1,2), (1,3), (1,4), (2,3), (2,5), (5, 6))
 
-        tr = traversals.Traversal(g)
-        traversals.dfs(1, tr)
+        tr = dfs.Traversal(g)
+        dfs.dfs(1, tr)
         self.assertEqual(tr.node_state[1], 1)
         self.assertEqual(tr.node_state[2], 1)
         self.assertEqual(tr.node_state[3], 1)
@@ -47,9 +47,9 @@ class Tests(unittest.TestCase):
                          key_func = (lambda node: node.label), 
                          neighbors_func = (lambda node: [(n,None) for n in node.neighbors]))
 
-        class MyTraversal(traversals.Traversal):
+        class MyTraversal(dfs.Traversal):
             def __init__(self, graph):
-                traversals.Traversal.__init__(self, graph)
+                dfs.Traversal.__init__(self, graph)
                 self.copiedNodes = {}
 
             def should_process_children(self, node):
@@ -65,7 +65,7 @@ class Tests(unittest.TestCase):
                 # self.copiedNodes[target.label].neighbors.append(self.copiedNodes[source.label])
 
         mt = MyTraversal(g)
-        traversals.dfs(nodes[0], mt)
+        dfs.dfs(nodes[0], mt)
         self.assertEqual(sorted([n.label for n in mt.copiedNodes[0].neighbors]), [1,5])
         self.assertEqual(sorted([n.label for n in mt.copiedNodes[1].neighbors]), [2,5])
         self.assertEqual(sorted([n.label for n in mt.copiedNodes[2].neighbors]), [3])

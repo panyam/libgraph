@@ -1,15 +1,15 @@
 
 import ipdb
 import unittest
-from libgraph import graphs, traversals, algorithms
+from libgraph import graphs, bfs, algorithms
 
 class Tests(unittest.TestCase):
     def test_basic(self):
         g = graphs.Graph()
         g.add_edges((1,2), (1,3), (1,4), (2,5), (5, 6))
 
-        tr = traversals.Traversal(g)
-        traversals.bfs(1, tr)
+        tr = bfs.Traversal(g)
+        bfs.bfs(1, tr)
         self.assertEqual(tr.node_state[1], 1)
         self.assertEqual(tr.node_state[2], 1)
         self.assertEqual(tr.node_state[3], 1)
