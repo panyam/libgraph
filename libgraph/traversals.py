@@ -26,7 +26,7 @@ class Traversal(object):
     def should_process_children(self, node): return True
     def process_node(self, node): return True
     def process_edge(self, source, target, edge_data): return True
-    def select_children(self, node, reverse = False): return self.graph.iter_edges(node, reverse = reverse)
+    def select_children(self, node, reverse = False): return self.graph.iter_neighbors(node, reverse = reverse)
 
 def bfs(start_node, traversal):
     """
@@ -62,17 +62,18 @@ def bfs(start_node, traversal):
     """
     if not start_node: return
     queue = deque([(None, start_node)])
+    g = traversal.graph
 
     while queue and not traversal.terminated:
         parent, node = queue.popleft()
-        traversal.node_state[node] = DISCOVERED
+        traversal.node_state[g.key_func(node)] = DISCOVERED
         if traversal.should_process_children(node) is False: continue
 
-        traversal.node_state[node] = PROCESSED
+        traversal.node_state[g.key_func(node)] = PROCESSED
         for n,edge in traversal.select_children(node):
-            if traversal.node_state[n] != PROCESSED:
+            if traversal.node_state[g.key_func(n)] != PROCESSED:
                 queue.append((node,n))
-                traversal.parents[n] = node
+                traversal.parents[g.key_func(n)] = node
 
         # Called after all children are added to be processed
         traversal.process_node(node)
@@ -113,21 +114,24 @@ def dfs(node, traversal):
     """
     if traversal.terminated: return
 
-    traversal.node_state[node] = DISCOVERED
-    traversal.entry_times[node] = traversal.curr_time
+    g = traversal.graph
+    traversal.node_state[g.key_func(node)] = DISCOVERED
+    traversal.entry_times[g.key_func(node)] = traversal.curr_time
     traversal.curr_time += 1
 
     if traversal.should_process_children(node) is not False:
         # Now go through all children
         for n,edge in traversal.select_children(node, reverse = True):
-            if n not in traversal.node_state: # Node has not even been discovered yet
-                traversal.parents[n] = node
+            if g.key_func(n) == g.key_func(node):
+                traversal.process_edge(node, n, edge)
+            elif traversal.node_state[g.key_func(n)] == None: # Node has not even been discovered yet
+                traversal.parents[g.key_func(n)] = node
                 traversal.process_edge(node, n, edge)
                 dfs(n, traversal)
-            elif traversal.node_state[n] == DISCOVERED or traversal.graph.is_directed:
+            elif traversal.node_state[g.key_func(n)] == DISCOVERED or traversal.graph.is_directed:
                 traversal.process_edge(node, n, edge)
         if traversal.process_node(node) is not False:
-            traversal.node_state[node] = PROCESSED
+            traversal.node_state[g.key_func(node)] = PROCESSED
             traversal.curr_time += 1
-            traversal.exit_times[node] = traversal.curr_time
+            traversal.exit_times[g.key_func(node)] = traversal.curr_time
 
