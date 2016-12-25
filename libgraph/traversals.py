@@ -115,23 +115,27 @@ def dfs(node, traversal):
     if traversal.terminated: return
 
     g = traversal.graph
-    traversal.node_state[g.key_func(node)] = DISCOVERED
-    traversal.entry_times[g.key_func(node)] = traversal.curr_time
+    node_key = g.key_func(node)
+    traversal.node_state[node_key] = DISCOVERED
+    traversal.entry_times[node_key] = traversal.curr_time
     traversal.curr_time += 1
 
     if traversal.should_process_children(node) is not False:
         # Now go through all children
-        for n,edge in traversal.select_children(node, reverse = True):
-            if g.key_func(n) == g.key_func(node):
-                traversal.process_edge(node, n, edge)
-            elif traversal.node_state[g.key_func(n)] == None: # Node has not even been discovered yet
-                traversal.parents[g.key_func(n)] = node
-                traversal.process_edge(node, n, edge)
+        children = list(traversal.select_children(node, reverse = True))
+        # print "Node, Children: ", g.key_func(node), children
+        for n,edge in children:
+            child_key = g.key_func(n)
+            traversal.process_edge(node, n, edge)
+            if traversal.node_state[child_key] == None: # Node has not even been discovered yet
+                traversal.parents[child_key] = node
+                # traversal.process_edge(node, n, edge)
                 dfs(n, traversal)
-            elif traversal.node_state[g.key_func(n)] == DISCOVERED or traversal.graph.is_directed:
-                traversal.process_edge(node, n, edge)
+            # elif traversal.node_state[child_key] == DISCOVERED or traversal.graph.is_directed:
+                # self-loop - special processing - dont recurse, just process the edge
+            #   traversal.process_edge(node, n, edge)
         if traversal.process_node(node) is not False:
-            traversal.node_state[g.key_func(node)] = PROCESSED
+            traversal.node_state[node_key] = PROCESSED
             traversal.curr_time += 1
-            traversal.exit_times[g.key_func(node)] = traversal.curr_time
+            traversal.exit_times[node_key] = traversal.curr_time
 

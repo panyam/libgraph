@@ -26,7 +26,7 @@ class Graph(object):
     def is_multi(self): return self._is_multi
 
     def get_edge(self, source, target):
-        return self.nodes.get(source, {}).get(target, None)
+        return self.nodes.get(self.key_func(source), {}).get(self.key_func(target), None)
 
     def add_nodes(self, *nodes):
         return [self.add_node(node) for node in nodes]
@@ -35,15 +35,15 @@ class Graph(object):
         """
         Adds or update a node (any hashable) in the graph.
         """
-        if node not in self.nodes: self.nodes[node] = {}
-        return self.nodes[node]
+        if node not in self.nodes: self.nodes[self.key_func(node)] = {}
+        return self.nodes[self.key_func(node)]
 
     def neighbors(self, node):
         """Return the neighbors of a node."""
         if self.neighbors_func:
             return self.neighbors_func(node)
         else:
-            return self.nodes.get(node, {})
+            return self.nodes.get(self.key_func(node), {})
 
     def iter_neighbors(self, node, reverse = False):
         """
@@ -61,9 +61,11 @@ class Graph(object):
     def add_raw_edge(self, edge):
         self.add_nodes(edge.source,edge.target)
         source,target = edge.source,edge.target
-        self.nodes[source][target] = edge
+        source_key = self.key_func(source)
+        target_key = self.key_func(target)
+        self.nodes[source_key][target_key] = edge
         if not self.is_directed:
-            self.nodes[target][source] = edge
+            self.nodes[target_key][source_key] = edge
         return edge
 
     def add_edge(self, source, target):
