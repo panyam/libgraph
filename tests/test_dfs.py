@@ -52,15 +52,15 @@ class Tests(unittest.TestCase):
                 dfs.Traversal.__init__(self, graph)
                 self.copiedNodes = {}
 
-            def should_process_children(self, node):
+            def should_process_node(self, node):
                 if node.label not in self.copiedNodes:
                     print "Processing Node: ", node.label
                     self.copiedNodes[node.label] = UndirectedGraphNode(node.label)
 
             def process_edge(self, source, target, edge_data): 
                 print "Processing Edge: ", source.label, target.label
-                self.should_process_children(source)
-                self.should_process_children(target)
+                self.should_process_node(source)
+                self.should_process_node(target)
                 self.copiedNodes[source.label].neighbors.append(self.copiedNodes[target.label])
                 # self.copiedNodes[target.label].neighbors.append(self.copiedNodes[source.label])
 
