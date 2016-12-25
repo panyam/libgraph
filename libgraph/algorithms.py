@@ -17,7 +17,7 @@ def connected_components(graph):
             self.components = {}
             self.curr_component = 0
 
-        def process_node(self, node):
+        def children_queued(self, node):
             self.components[node] = self.curr_component
 
     traversal = CCTraversal(graph)

@@ -21,8 +21,8 @@ class Traversal(object):
         # Set this flag to true if you want the traversal to stop
         self.terminated = False
 
-    def should_process_children(self, node): return True
-    def process_node(self, node): return True
+    def should_process_node(self, node): return True
+    def children_queued(self, node): return True
     def process_edge(self, source, target, edge_data): return True
     def select_children(self, node, reverse = False): return self.graph.iter_neighbors(node, reverse = reverse)
 
@@ -32,15 +32,14 @@ def bfs(start_node, traversal):
     
     Traversal object contains the following:
 
-        should_process_children(node):
+        should_process_node(node):
             This method is called before a node is processed.  If this method
             returns a False then the node is not processed (and not marked as processed).
             If this method returns False, the success nodes of this node will also not be 
             visited.
 
-        process_node(node):
-            This method is called when a node is ready to be processed (after it has been
-            visited).  Only if this method returns True then the node is marked as "processed".
+        children_queued(node):
+            Called when all the children of a node have been queued.
 
         process_edge(source, target, edge_data):
             When a node is reached, process_edge is called on the edge that lead to
@@ -64,15 +63,17 @@ def bfs(start_node, traversal):
 
     while queue and not traversal.terminated:
         parent, node = queue.popleft()
-        traversal.node_state[g.key_func(node)] = DISCOVERED
-        if traversal.should_process_children(node) is False: continue
+        nodekey = g.key_func(node)
+        traversal.node_state[nodekey] = DISCOVERED
+        if traversal.should_process_node(node) is False: continue
 
-        traversal.node_state[g.key_func(node)] = PROCESSED
+        traversal.node_state[nodekey] = PROCESSED
         for n,edge in traversal.select_children(node):
-            if traversal.node_state[g.key_func(n)] != PROCESSED:
+            childkey = g.key_func(n)
+            if traversal.node_state[childkey] != PROCESSED:
+                traversal.parents[childkey] = node
                 queue.append((node,n))
-                traversal.parents[g.key_func(n)] = node
 
         # Called after all children are added to be processed
-        traversal.process_node(node)
+        traversal.children_queued(node)
 
